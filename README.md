@@ -18,23 +18,25 @@ partial charging for reliable state-of-health estimation” (submitted).
 The original analysis was performed using two data-sets, the designed to
 emulate the operation of a forklift, while the second was designed using
 the WLTC driving profile. Only the forklift data-set is publicly
-available: [Mendeley Data](https://doi.org/10.17632/yz4pttm73n.2). NB: a
-more thorough introduction to the forklift data-set can be found at:
+available: [Mendeley Data](https://doi.org/10.17632/yz4pttm73n.2).
+
+A more thorough introduction to the forklift data-set can be found at:
 [“Dataset of lithium-ion battery degradation based on a forklift mission
 profile for state-of-health estimation and lifetime prediction”, S. B.
 Vilsen and D.-I. Stroe, Data in Brief
 (2024)](https://www.sciencedirect.com/science/article/pii/S2352340923009228).
 
-New data can be added to the analysis, if it follows the same format as
-the forklift data-set. That is, needs to have the following the
-structure:
+New data can also be added to the analysis, if it follows the same
+format as the forklift data-set. That is, needs to have the following
+folder, file, and naming structure:
 
 <img src="Figures/folders.png" width="400px" />
 
-The name of the `ROOT` directory depicted above is used in the
-subsequent analysis as the name of the profile, i.e., `ROOT` folder
+The name of the `ROOT` directory, shown in the figure, is used in
+subsequent analyses as the name of the profile, i.e., `ROOT` folder
 names should not be duplicated. Furthermore, both RPT and ageing files
-are expected to contain the following columns:
+are expected to be in a `.csv` format, and contain the following
+columns:
 
 | Cell | Round | Part |   Time |  Current | Voltage |  Energy | Temperature |
 |-----:|------:|-----:|-------:|---------:|--------:|--------:|------------:|
@@ -49,8 +51,25 @@ are expected to contain the following columns:
 |    1 |     1 |    1 | 40.121 | -44.9978 |  3.3165 | -1.4808 |      44.871 |
 |    1 |     1 |    1 | 41.124 | -42.9982 |  3.3167 | -1.5187 |      44.802 |
 
+If the profile used to generate the data was not separated into parts,
+then the column `Part` should just contain the number `1` for all
+entries. Furthermore, the column `Energy` is not utilised in the
+analyses.
+
 ## Scripts
 
 The repository contains five scripts:
 
--   `00-master.R`
+-   `00-master.R`:
+
+-   `01-extractcapacity.R`:
+
+-   `02-extractfeatures.R`:
+
+-   `03-trainmodels.R`:
+
+-   `04-visualisemodels.R`:
+
+## License
+
+This project is licensed under the MIT License.
