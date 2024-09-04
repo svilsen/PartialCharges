@@ -27,7 +27,7 @@ Vilsen and D.-I. Stroe, Data in Brief
 
 New data can be added to the analysis, if it follows the same format as
 the forklift data-set. That is, needs to have the following the
-structure: <img src="Figures/folders.png" width="2225" />
+structure: <img src="Figures/folders.png" width="400px" />
 
 The name of the `ROOT` directory depicted above is used in the
 subsequent analysis as the name of the profile, i.e., `ROOT` folder
