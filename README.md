@@ -62,8 +62,11 @@ The repository contains five scripts (four working scripts and a master
 script):
 
 -   `00-master.R`: The master script loads packages, sets default
-    plotting behaviour, paths for data and files, and activates (or
-    deactivates) scripts for running (or re-running) analyses.
+    plotting behaviour, paths for data, files, and figures, and
+    (de-)activates scripts for (re-)running analyses. The behaviour of
+    the remaining scripts are controlled by `TRUE/FALSE` flags, e.g.,
+    setting `make_figures = TRUE` will be (re-)make every figure in the
+    `04-visualisemodels.R`-script.
 
 -   `01-extractcapacity.R`: A script for extracting capacity
     measurements from RPT files; the script depends on the functions
