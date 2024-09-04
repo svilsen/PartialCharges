@@ -16,10 +16,7 @@ library("MASS")
 library("Rcpp")
 library("tidyverse")
 
-#### Analysis parameters ---- 
-theme_set(theme_bw(base_size = 15))
-make_figures <- FALSE
-
+#### Paths ---- 
 data_dir <- "Data"
 files_dir <- "Files"
 
@@ -54,6 +51,8 @@ source("03-trainmodels.R")
 
 #### Validate models ----
 #
+theme_set(theme_bw(base_size = 15))
+
 make_figures <- FALSE
 create_vi <- FALSE
 

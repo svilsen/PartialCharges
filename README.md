@@ -58,17 +58,29 @@ analyses.
 
 ## Scripts
 
-The repository contains five scripts:
+The repository contains five scripts (four working scripts and a master
+script):
 
--   `00-master.R`:
+-   `00-master.R`: The master script loads packages, sets default
+    plotting behaviour, paths for data and files, and activates (or
+    deactivates) scripts for running (or re-running) analyses.
 
--   `01-extractcapacity.R`:
+-   `01-extractcapacity.R`: A script for extracting capacity
+    measurements from RPT files; the script depends on the functions
+    found in `Functions/capacity_functions.R`.
 
--   `02-extractfeatures.R`:
+-   `02-extractfeatures.R`: A script for identifying partial charges and
+    extracting features from each of each partial charge, given a
+    pre-specified voltage interval; the script depends on the functions
+    found in `Functions/feature_functions.R`.
 
--   `03-trainmodels.R`:
+-   `03-trainmodels.R`: A script used to define relevant features,
+    random split the data into training and validation-sets, normalise
+    the features (based solely on the training-set), and train models
+    using the training-set.
 
--   `04-visualisemodels.R`:
+-   `04-visualisemodels.R`: A script used to visualise the trained
+    models, and determine the feature importance for each model.
 
 ## License
 

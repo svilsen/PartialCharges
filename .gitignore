@@ -5,8 +5,8 @@
 
 *.zip
 
-Data/Forklifts/*
-Data/WLTC/*
+Data/Forklifts/*/*/*.csv
+Data/WLTC/*/*/*.csv
 
 Files/Models/MLR/*
 Files/Models/SVR/*
