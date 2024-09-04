@@ -30,7 +30,7 @@ New data can also be added to the analysis, if it follows the same
 format as the forklift data-set. That is, needs to have the following
 folder, file, and naming structure:
 
-<img src="Figures/folders.png" width="400px" />
+<img src="Figures/folders.png" width="400px" style="display: block; margin: auto;" />
 
 The name of the `ROOT` directory, shown in the figure, is used in
 subsequent analyses as the name of the profile, i.e., `ROOT` folder
