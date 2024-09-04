@@ -70,17 +70,34 @@ script):
 
 -   `01-extractcapacity.R`: A script for extracting capacity
     measurements from RPT files; the script depends on the functions
-    found in `Functions/capacity_functions.R`.
+    found in `Functions/capacity_functions.R`. Furthermore, the
+    extraction depends on the variable `profile_search_limits`, a vector
+    where each element corresponds to the starting point of the
+    extraction for the given profile (i.e., `ROOT` data-folder).
 
 -   `02-extractfeatures.R`: A script for identifying partial charges and
     extracting features from each of each partial charge, given a
     pre-specified voltage interval; the script depends on the functions
-    found in `Functions/feature_functions.R`.
+    found in `Functions/feature_functions.R`. Furthermore, the script
+    depends on five variables: a list of voltage features,
+    `voltage_feature_functions`, a list of current features,
+    `current_feature_functions`, a lower limit on the number of seconds
+    needed to declare a sequence of measurements a partial charge,
+    `charging_lower_limit`, a vector of lower voltage limits,
+    `min_start_voltage`, and a vector of upper voltage limits,
+    `max_end_voltage`. The elements `charging_lower_limit`,
+    `min_start_voltage`, and `max_end_voltage` corresponds to the
+    profiles (i.e., `ROOT` data-folder).
 
 -   `03-trainmodels.R`: A script used to define relevant features,
     random split the data into training and validation-sets, normalise
     the features (based solely on the training-set), and train models
-    using the training-set.
+    using the training-set. Furthermore, the script depends on the
+    features included in each of the four segments, i.e., features
+    extracted during partial charging from within the interval,
+    `window_capacity_features`, during partial charging from before the
+    interval, `window_prior_capacity_features`, and from the discharge
+    leading up to the partial charge, `window_prior_features`.
 
 -   `04-visualisemodels.R`: A script used to visualise the trained
     models, and determine the feature importance for each model.
