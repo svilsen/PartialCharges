@@ -9,6 +9,7 @@ Data/Forklifts/*/*/*.csv
 Data/WLTC/*/*/*.csv
 
 Files/Models/RF/*.Rds
+Files/Models/SVR/*.Rds
 
 Figures/*_wo_FEC.pdf
 Figures/folder.png
