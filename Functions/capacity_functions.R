@@ -1,3 +1,11 @@
+#' @title Capacity extraction
+#' 
+#' @description Function extracting the capacity of a reference performance test.
+#' 
+#' @param rpt A \link[tibble]{tibble} (or \link{data.frame}) containing the RPT current and voltage measurements.
+#' @param L The minimum (dis)charging time required for it to count as a reference measurement.
+#' 
+#' @return A \link[tibble]{tibble} containing the capacity measurements.
 capacity_extract <- function(rpt, L = 3000) {
     #
     dch <- rle(rpt$Current < 0)
@@ -31,6 +39,14 @@ capacity_extract <- function(rpt, L = 3000) {
     return(cap)
 }
 
+#' @title Charge curve extraction 
+#' 
+#' @description Function extracting the charge curve of a reference performance test.
+#' 
+#' @param rpt A \link[tibble]{tibble} (or \link{data.frame}) containing the RPT current and voltage measurements.
+#' @param L The minimum (dis)charging time required for it to count as a reference measurement.
+#' 
+#' @return A \link[tibble]{tibble} containing the charge curves.
 charge_curve_extract <- function(rpt, L = 10000) {
     dch <- rle(rpt$Current < 0)
     charge_curve <- rpt |> 

@@ -1,3 +1,4 @@
+################################################
 #### Libraries ----
 # 
 library("caret")
@@ -20,11 +21,14 @@ library("tidyverse")
 data_dir <- "Data"
 files_dir <- "Files"
 
+################################################
 #### Cleaning data ----
 #
 extract_capacity <- FALSE
+extract_charge <- FALSE
 
 #
+source("Functions/capacity_functions.R")
 source("01-extractcapacity.R")
 
 #### Extracting features ----
@@ -49,7 +53,7 @@ train_nn_models <- FALSE
 source("Functions/training_functions.R")
 source("03-trainmodels.R")
 
-#### Validate models ----
+#### Visualise models ----
 #
 theme_set(theme_bw(base_size = 15))
 
@@ -57,4 +61,4 @@ make_figures <- FALSE
 create_vi <- FALSE
 
 #
-source("04-validatemodels.R")
+source("04-visualisemodels")

@@ -1,4 +1,13 @@
-## Restricted descriptive statistics 
+#### Restricted descriptive statistics ----
+#' @title Restricted mean
+#' 
+#' @description Function calculating the mean, restricted to be between the \code{p}'th and \code{(1-p)}'th quantile. 
+#' 
+#' @param x A numeric vector.
+#' @param p A number larger than 0 and smaller than 0.5 (neither included).
+#' @param na.rm TRUE/FALSE: should \code{NA} values be removed?
+#' 
+#' @return The arithmetic mean between the quantiles \code{p} and \code{(1-p)}.
 r_mean <- function(x, p, na.rm = TRUE) {
     if (na.rm) {
         x <- x[!is.na(x)]
@@ -12,6 +21,15 @@ r_mean <- function(x, p, na.rm = TRUE) {
     return(M)
 }
 
+#' @title Restricted standard deviation
+#' 
+#' @description Function calculating the standard deviation, restricted to be between the \code{p}'th and \code{(1-p)}'th quantile. 
+#' 
+#' @param x A numeric vector.
+#' @param p A number larger than 0 and smaller than 0.5 (neither included).
+#' @param na.rm TRUE/FALSE: should \code{NA} values be removed?
+#' 
+#' @return The standard deviation between the quantiles \code{p} and \code{(1-p)}.
 r_sd <- function(x, p, na.rm = TRUE) {
     if (na.rm) {
         x <- x[!is.na(x)]
@@ -27,6 +45,15 @@ r_sd <- function(x, p, na.rm = TRUE) {
     return(S)
 }
 
+#' @title Restricted skewness
+#' 
+#' @description Function calculating the skewness, restricted to be between the \code{p}'th and \code{(1-p)}'th quantile. 
+#' 
+#' @param x A numeric vector.
+#' @param p A number larger than 0 and smaller than 0.5 (neither included).
+#' @param na.rm TRUE/FALSE: should \code{NA} values be removed?
+#' 
+#' @return The skewness between the quantiles \code{p} and \code{(1-p)}.
 r_skewness <- function(x, p, na.rm = TRUE) {
     if (na.rm) {
         x <- x[!is.na(x)]
@@ -41,6 +68,15 @@ r_skewness <- function(x, p, na.rm = TRUE) {
     return(S)
 }
 
+#' @title Restricted kurtosis
+#' 
+#' @description Function calculating the kurtosis, restricted to be between the \code{p}'th and \code{(1-p)}'th quantile. 
+#' 
+#' @param x A numeric vector.
+#' @param p A number larger than 0 and smaller than 0.5 (neither included).
+#' @param na.rm TRUE/FALSE: should \code{NA} values be removed?
+#' 
+#' @return The kurtosis between the quantiles \code{p} and \code{(1-p)}.
 r_kurtosis <- function(x, p, na.rm = TRUE) {
     if (na.rm) {
         x <- x[!is.na(x)]
@@ -55,12 +91,21 @@ r_kurtosis <- function(x, p, na.rm = TRUE) {
     return(S)
 }
 
+#' @title Restricted mean absolute deviation
+#' 
+#' @description Function calculating the mean absolute deviation, restricted to be between the \code{p}'th and \code{(1-p)}'th quantile. 
+#' 
+#' @param x A numeric vector.
+#' @param p A number larger than 0 and smaller than 0.5 (neither included).
+#' @param na.rm TRUE/FALSE: should \code{NA} values be removed?
+#' 
+#' @return The mean absolute deviation between the quantiles \code{p} and \code{(1-p)}.
 r_mad <- function(x, p, na.rm = TRUE) {
     R <- r_mean(abs(x - r_mean(x, p, na.rm)), p, na.rm)
     return(R)
 }
 
-## Sample entropy
+#### Sample entropy ----
 sourceCpp(code='
         #include <Rcpp.h>
         
@@ -115,26 +160,36 @@ sourceCpp(code='
         }'
 )
 
-sample_entropy <- function(X, m = NULL, r = NULL, normalise = FALSE) {
+#' @title Sample entropy
+#' 
+#' @description Function calculating the sample entropy.
+#' 
+#' @param x A numeric vector.
+#' @param m An integer defining the sub-sequence size.
+#' @param r A numeric defining the tolerance.
+#' @param standardise TRUE/FALSE: should the variable be standardised?
+#' 
+#' @return The sample entropy of \code{x}.
+sample_entropy <- function(x, m = NULL, r = NULL, standardise = FALSE) {
     ## 
-    if (normalise) {
-        X <- (X - mean(X)) / sd(X)
+    if (standardise) {
+        x <- (X - mean(x)) / sd(x)
     }
     
     if (is.null(m)) {
         m <- 2
     }
     
-    sigma_X = sd(X)
+    sigma_x = sd(x)
     if (is.null(r)) {
-        r <- 0.2 * sigma_X
+        r <- 0.2 * sigma_x
     }
     
-    s_entropy <- sample_entropy_cpp(X, m, r)
+    s_entropy <- sample_entropy_cpp(x, m, r)
     return(s_entropy)
 }
 
-## Fuzzy entropy
+#### Fuzzy entropy ----
 sourceCpp(code='
         #include <Rcpp.h>
         
@@ -210,6 +265,16 @@ sourceCpp(code='
         }'
 )
 
+#' @title Fuzzy entropy
+#' 
+#' @description Function calculating the fuzzy entropy.
+#' 
+#' @param x A numeric vector.
+#' @param m An integer defining the sub-sequence size.
+#' @param r A numeric defining the tolerance.
+#' @param standardise TRUE/FALSE: should the variable be standardised?
+#' 
+#' @return The fuzzy entropy of \code{x}.
 fuzzy_entropy <- function(X, m = NULL, r = NULL, normalise = FALSE) {
     ## 
     if (normalise) {
@@ -286,7 +351,26 @@ sourceCpp(code='
         }'
 )
 
-## Extract features 
+#### Extract features ----
+#' @title Feature extraction
+#' 
+#' @description Function for extracting features of a dynamic profile.
+#' 
+#' @param ageing_file A \link[tibble]{tibble} (or \link{data.frame}) containing current and voltage measurements.
+#' @param capacity_file The capacity of the cell at the beginning, and the end of this round of ageing.
+#' @param capacity_0 The capacity of the cell at BOL.
+#' @param fec The total FEC the cell has been subjected to at the beginning of this round of ageing. 
+#' @param fec_0 The average FEC recorded across ageing (used in cases where the FEC produces \code{NA}'s).
+#' @param voltage_feature_functions A list of functions used to extract features from the voltage.
+#' @param current_feature_functions A list of functions used to extract features from the current.
+#' @param charging_lower_limit A numeric indicating the number of seconds necessary to extract features from a charge. 
+#' @param min_start_voltage The lower voltage limit of the voltage interval.
+#' @param max_start_voltage The upper voltage limit of the voltage interval.
+#' @param epsilon A numeric indicating the number of consecutive seconds needed for the profile to be deemed reliable.
+#' @param nr_cores The number of cores used to speed up the extraction (passed to \link[parallel]{mclapply}).
+#' @param trace An integer indicating how often a trace should be printed. 
+#' 
+#' @return A \link[tibble]{tibble} containing the capacity measurements.
 feature_extraction <- function(
         ageing_file, 
         capacity_file, 
@@ -319,20 +403,20 @@ feature_extraction <- function(
         structure(.Dimnames = list(NULL, c("Time", "Current", "Voltage", "Temperature", "FEC"))) |> 
         as_tibble()
     
+    ## Checks if FEC is calculated correctly, and linearly interpolates any NA values.
     if (is.na(ageing_time$FEC[length(ageing_time$FEC)])) {
         ageing_time$FEC[length(ageing_time$FEC)] <- fec + fec_0
     }
     
+    ageing_time <- ageing_time |> mutate(FEC = zoo::na.approx(FEC))
     
-    ageing_time <- ageing_time |> 
-        mutate(FEC = zoo::na.approx(FEC))
-    
+    ## Collects time corrected data, cell, and round information.
     ageing_file <- ageing_file |> 
         distinct(Cell, Round) |> 
         mutate(VAL = list(ageing_time)) |> 
         unnest(VAL)
     
-    ## Finds partial charges longer than 'charging_lower_limit' seconds
+    ## Finds partial charges longer than 'charging_lower_limit' seconds, with gaps smaller than 'epsilon' seconds.
     total_time <- max(ageing_file$Time)
     ageing_file_split <- ageing_file |> 
         filter(Current >= 0) |> 
@@ -357,19 +441,20 @@ feature_extraction <- function(
         ) |>
         (\(x) split(x, x$ChargeCycle))()
     
-    ## 
+    ## Extracts features from the identified partial charges.
     start_times <- unname(c(0, sapply(ageing_file_split, function(x) unique(x$TimeStart))))
     partial_charging_intervals <- parallel::mclapply(seq_along(ageing_file_split), function(k) {
+        ## Shows a trace of which file is currently being processed (only shown when 'nr_cores = 1').
         if (trace > 0) {
             if ((k == 1) || (k == length(ageing_file_split)) || ((k %% trace) == 0)) {
                 cat("\t\tCharge cycle:", k, "/", length(ageing_file_split), "\n") 
             }
         }
         
-        ## Extracting at cycle 'k'
+        ## Extracting k'th partial charge
         ageing_file_split_k <- ageing_file_split[[k]]
         
-        ## Extracting features from prior usage
+        ## Extracting features from dynamic discharge prior to k'th partial charge.
         prior_usage_k <- ageing_file |> 
             filter(Time >= start_times[k], Time < start_times[k + 1]) |> 
             mutate(
@@ -434,7 +519,7 @@ feature_extraction <- function(
             ) |> 
             dplyr::select(Cell, Round, ChargeCycle, StartTime = TimeStart, DeltaTime, StartVoltage, EndVoltage, DeltaVoltage, minVoltage, maxVoltage, SOHW, SOH, SOH0, D, D0)
         
-        ## Descriptive features
+        ## Extracting descriptive features
         desc_k <- ageing_file_split_k_total |> 
             summarise(
                 FEC = FEC[1],
@@ -446,7 +531,7 @@ feature_extraction <- function(
         
         res_k <- res_k |> bind_cols(desc_k)
         
-        ## Transient
+        ## Extracting internal resistance.
         tran_k <- ageing_file_split_k_total |> 
             summarise(
                 Ri = (Voltage[n()] - Voltage[1]) / Current[1],
@@ -455,7 +540,7 @@ feature_extraction <- function(
         
         res_k <- res_k |> bind_cols(tran_k)
         
-        ## Previous usage in charge-cycle
+        ## Previous charge within partial charge, but before the voltage interval.
         if ((ageing_file_split_k_start - 1) > 0) {
             ignored_partial_k <- ageing_file_split_k[seq(1, ageing_file_split_k_start - 1), ] |> 
                 summarise(

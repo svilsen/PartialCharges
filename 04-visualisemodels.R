@@ -1,6 +1,6 @@
 #### Creating figures of raw data ----
 if (make_figures) {
-    ## Degradation
+    #### Degradation ----
     partial_charging_intervals <- readRDS(file = paste0(files_dir, "/partial_charging_intervals.Rds"))
     
     degradation_plots <- partial_charging_intervals |> 
@@ -11,7 +11,7 @@ if (make_figures) {
     fec_lim <- 50 * ceiling(c(min(degradation_plots$FEC), max(degradation_plots$FEC)) / 50)
     deg_lim <- ceiling(100 * c(min(degradation_plots$D0), max(degradation_plots$D0)))
     
-    # Forklift
+    ## Forklift
     pdf("Figures/forklifts_degradation.pdf", width = 8, height = 5)
     degradation_plots |> 
         filter(Profile == "Forklifts") |> 
@@ -29,7 +29,7 @@ if (make_figures) {
         theme(legend.position = c(0.7, 0.3))
     dev.off()
     
-    # WLTC
+    ## WLTC
     pdf("Figures/wltc_degradation.pdf", width = 8, height = 5)
     degradation_plots |> 
         filter(Profile == "WLTC") |> 
@@ -47,8 +47,8 @@ if (make_figures) {
         theme(legend.position = c(0.3, 0.8))
     dev.off()
     
-    ## Current / voltage
-    # Forklifts
+    #### Current / voltage ----
+    ## Forklifts
     forklift_plots <- read_csv(paste0(data_dir, "/Forklifts/Cell1/Round01/Ageing.csv"), show_col_types = FALSE, progress = FALSE) |> 
         filter(Part == 1, Time > 5600, Time < 51300)
     
@@ -80,7 +80,7 @@ if (make_figures) {
         theme(legend.position = "none")
     dev.off()
     
-    # WLTC
+    ## WLTC
     wltc_plots <- read_csv(paste0(data_dir, "/WLTC/Cell1/Round01/Ageing.csv"), show_col_types = FALSE, progress = FALSE) |> 
         filter(Part == 1, Time > 10000, Time < 55000)
     
@@ -102,7 +102,7 @@ if (make_figures) {
         theme(legend.position = "none")
     dev.off()
     
-    ## Charge curves / degradation
+    #### Charge curves / degradation ----
     rounds_keep <- sort((degradation_plots |> filter(Profile == "Forklifts", Cell == 1))$Round)
     charge <- readRDS("Files/forklifts_charge.Rds") |> 
         filter(Round %in% rounds_keep) |> 
@@ -136,8 +136,6 @@ if (make_figures) {
 
 #### Creating figures of features ----
 if (make_figures) {
-    partial_charging_std <- readRDS(paste0(files_dir, "/partial_charging_intervals_training_random.Rds"))
-    
     c_within_vi_order <- c(
         "AH", "Current_Average", "Current_SD", "Current_Skewness", "Current_Kurtosis", "Current_MAD",  
         "StartVoltage", "DeltaVoltage", "Voltage_Average", "Voltage_SD", "Voltage_Skewness", "Voltage_Kurtosis", "Voltage_MAD", "Voltage_MaxDelta", "Voltage_FE", 
@@ -158,7 +156,7 @@ if (make_figures) {
     )
     
     #### Correlation plots ----
-    # Features extracted during charging, but within the voltage interval
+    ## Features extracted during charging, but within the voltage interval
     correlation_c_within_vi <- partial_charging_std |> 
         filter(Data == "Training") |> 
         select(AH = FEC, StartVoltage, DeltaVoltage, starts_with("Voltage_"), starts_with("Current_"), Temperature, D0) |> 
@@ -185,7 +183,7 @@ if (make_figures) {
         theme(axis.text.x = element_text(angle = 90, vjust = 0.5), legend.position = "right", legend.text = element_text(size = 11), panel.grid.major = element_blank(), panel.grid.minor = element_blank())
     dev.off()
     
-    # Features extracted during charging, but before the voltage interval
+    ## Features extracted during charging, but before the voltage interval
     correlation_c_before_vi <- partial_charging_std |> 
         filter(Data == "Training") |> 
         select(starts_with("C_"), D0) |> 
@@ -210,7 +208,7 @@ if (make_figures) {
         theme(axis.text.x = element_text(angle = 90, vjust = 0.5), legend.position = "right", legend.text = element_text(size = 11), panel.grid.major = element_blank(), panel.grid.minor = element_blank())
     dev.off()
     
-    # Features extracted during discharging
+    ## Features extracted during discharging
     correlation_dc <- partial_charging_std |> 
         filter(Data == "Training") |> 
         select(starts_with("DC_"), D0) |>
@@ -236,7 +234,7 @@ if (make_figures) {
     dev.off()
     
     #### MIC plots ----
-    # Features extracted during charging, but within the voltage interval
+    ## Features extracted during charging, but within the voltage interval
     mine_c_within_vi <- partial_charging_std |> 
         filter(Data == "Training") |> 
         select(AH = FEC, StartVoltage, DeltaVoltage, starts_with("Voltage_"), starts_with("Current_"), Temperature, D0) |> 
@@ -264,7 +262,7 @@ if (make_figures) {
         theme(axis.text.x = element_text(angle = 90, vjust = 0.5), legend.position = "right", legend.text = element_text(size = 11), panel.grid.major = element_blank(), panel.grid.minor = element_blank())
     dev.off()
     
-    # Features extracted during charging, but before the voltage interval
+    ## Features extracted during charging, but before the voltage interval
     mine_c_before_vi <- partial_charging_std |> 
         filter(Data == "Training") |> 
         select(starts_with("C_"), D0) |> 
@@ -290,7 +288,7 @@ if (make_figures) {
         theme(axis.text.x = element_text(angle = 90, vjust = 0.5), legend.position = "right", legend.text = element_text(size = 11), panel.grid.major = element_blank(), panel.grid.minor = element_blank())
     dev.off()
     
-    # Features extracted during discharging
+    ## Features extracted during discharging
     mine_dc <- partial_charging_std |> 
         filter(Data == "Training") |> 
         select(starts_with("DC_"), D0) |> 
@@ -320,7 +318,7 @@ if (make_figures) {
 
 #### Creating figures of model predictions ----
 if (make_figures) {
-    #### ----
+    #### Model result plots ----
     prior_levels <- c("Without prior information", "Without prior charge information", "Without prior discharge information", "With prior information")
     type_levels <- c("Average weights", "Linear weights", "Exponential weights")
     
@@ -357,6 +355,7 @@ if (make_figures) {
         "Forklifts, Cell: 1, T: 45" = "#f8766d", "Forklifts, Cell: 2, T: 40" = "#00ba38", "Forklifts, Cell: 3, T: 35" = "#619cff", "WLTC, Cell: 1, T: 35" = "#f48a1a", "WLTC, Cell: 2, T: 35" = "#c400be"
     )
     
+    ## Model predictions against FEC
     pdf("Figures/comparing_methods.pdf", height = 12, width = 20)
     avg_error_tibble |> 
         ggplot(aes(x = FEC)) + 
@@ -390,6 +389,7 @@ if (make_figures) {
         theme(legend.position = "top")
     dev.off()
     
+    ## Model predictions against measured degradation
     pdf("Figures/comparing_methods_one_to_one.pdf", height = 12, width = 20)
     avg_error_tibble |> 
         ggplot(aes(x = 100*D)) + 
@@ -419,6 +419,7 @@ if (make_figures) {
         theme(legend.position = "top")
     dev.off()
     
+    ## Model errors against measured degradation
     pdf("Figures/comparing_methods_difference.pdf", height = 12, width = 20)
     avg_error_tibble |> 
         ggplot(aes(x = 100 * D)) + 
@@ -449,6 +450,7 @@ if (make_figures) {
         theme(legend.position = "top")
     dev.off()
     
+    ## Model errors density
     pdf("Figures/comparing_methods_density.pdf", height = 12, width = 20)
     total_error_tibble |> 
         mutate(Error = 100 * (D - DHAT)) |> 
@@ -464,6 +466,7 @@ if (make_figures) {
         theme(legend.position = "top")
     dev.off()
     
+    ## Table of model errors
     total_error_table <- total_error_tibble |> 
         group_by(Profile, Model, Prior, TYPE) |> 
         filter(Data == "Validation", !is.nan(DHAT), !is.na(DHAT)) |> 
@@ -483,15 +486,13 @@ if (make_figures) {
 
 #### Creating variable importance tibble for each model ----
 if (create_vi) {
-    partial_charging_std <- readRDS(paste0(files_dir, "/partial_charging_intervals_training_random.Rds"))
-    
     models <- c("MLR", "SVR", "RF", "NN") 
     model_levels <- c("MLR", "SVR", "RF", "NN") 
     
     priors <- c("without_prior_knowledge", "without_prior_charge_knowledge", "without_prior_discharge_knowledge", "with_all_prior_knowledge")
     prior_levels <- c("Without prior information", "Without prior charge information", "Without prior discharge information", "With prior information")
     
-    #### ----
+    ## Calculating importance scores
     for (i in seq_along(model_levels)) {
         cat("Model:", model_levels[i], paste0("(", i, " / ", length(models), ")"), "\n")
         
@@ -515,6 +516,7 @@ if (create_vi) {
             }
         }
         
+        ##
         variable_importance_i <- vector("list", length(prior_levels)) 
         for (j in seq_along(variable_importance_i)) {
             cat("\tPrior:", prior_levels[j], paste0("(", j, " / ", length(priors), ")"), "\n")
@@ -567,7 +569,7 @@ if (create_vi) {
         
     }
     
-    ##
+    ## Collecting information from each of the models.
     variable_importance <- vector("list", length(model_levels)) 
     for (i in seq_along(models)) {
         variable_importance_i <- readRDS(paste0(files_dir, "/variable_importance_", tolower(models[i]), ".Rds"))
@@ -581,6 +583,7 @@ if (create_vi) {
             Prior = factor(Prior, levels = prior_levels)
         )
     
+    ## Saving the importance scores
     saveRDS(variable_importance, paste0(files_dir, "/variable_importance.Rds"))
 }
 
@@ -592,7 +595,7 @@ if (make_figures) {
             Variable = factor(Variable, levels = rev(str_replace_all(c(window_capacity_features[c(16, 10:14, 1:9, 17, 15, 18)], window_prior_capacity_features[c(2, 1, 11:15, 3:10)], window_prior_features[c(1, 8:13, 2:7, 14)]), "_", " ")))
         )
     
-    #### ----
+    #### Feature importance plots ----
     pdf("Figures/comparing_methods_vi_nn.pdf", height = 10, width = 15)
     variable_importance |> 
         filter(Model == "NN") |> 

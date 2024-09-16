@@ -1,4 +1,11 @@
-##
+#' @title Standardise features
+#' 
+#' @description Function standardising features based on a set of reference measurements (i.e. the training data). 
+#' 
+#' @param x A numeric vector.
+#' @param ref A logical vector indicating which values should be used as a reference.
+#' 
+#' @return The standardised feature.
 standardise_features_reference <- function(x, ref) {
     x_ref <- x[ref]
     
@@ -12,7 +19,24 @@ standardise_features_reference <- function(x, ref) {
     return((x - x_ref_mean) / x_ref_sd)
 }
 
-##
+#' @title Train deep feed forward neural network
+#' 
+#' @description Function creating and training a deep feed forward neural network. 
+#' 
+#' @param X_train A matrix containing the training features.
+#' @param y_train A vector containing the training target.
+#' @param X_val A matrix containing the validation features.
+#' @param y_val A vector containing the validation target.
+#' @param units A vector defining the number of neurons in each hidden layer. 
+#' @param activations A vector defining the activation functions applied in each hidden layer.
+#' @param loss A vector of loss functions for each round of optimisation.
+#' @param optimisers A list of optimisers for each round of optimisation.
+#' @param epochs A vector of epochs for each round of optimisation.
+#' @param batch_size The batch-size used when training the neural network (identical for each optimiser).
+#' @param metrics A vector of additional metrics passed to each of the optimisers.
+#' @param verbose A number indicating the verbosity exhibited during training.
+#' 
+#' @return A trained neural network.
 train_nn_model <- function(
         X_train, y_train, X_val = NULL, y_val = NULL,
         units = c(60, 30, 15),
