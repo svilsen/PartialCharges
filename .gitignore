@@ -9,8 +9,8 @@ Data/WLTC/*/*/*.csv
 
 Files/*.Rds
 
-Files/Forklifts/*/*/
-Files/WLTC/*/*/
+Files/Forklifts/*.Rds
+Files/WLTC/*.Rds
 
 Files/Models/MLR/*.Rds
 Files/Models/SVR/*.Rds
