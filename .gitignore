@@ -4,21 +4,24 @@
 .RData
 .Ruserdata
 
-Data/Forklifts/*/*/
-Data/WLTC/*/*/
-
-Figures/*.pdf
-Figures/folders.png
+Data/Forklifts/*/*/*.csv
+Data/WLTC/*/*/*.csv
 
 Files/*.Rds
 
-Files/Forklifts/*.Rds
-Files/WLTC/*.Rds
+Files/Forklifts/*/*/
+Files/WLTC/*/*/
 
-Files/Models/*/*.Rds
+Files/Models/MLR/*.Rds
+Files/Models/SVR/*.Rds
+Files/Models/RF/*.Rds
+
 Files/Models/NN/*/*/
 
-Files/RandomModels/*/*.Rds
-Files/RandomModels/NN/*/*
+Files/RandomModels/MLR/*.Rds
+Files/RandomModels/SVR/*.Rds
+Files/RandomModels/RF/*.Rds
+Files/RandomModels/NN/*.Rds
+
 
 README.rmd
