@@ -1,0 +1,81 @@
+################################################
+#### Libraries ----
+##
+#
+library("caret")
+library("ranger")
+library("kernlab")
+library("keras")
+
+#
+library("ggcorrplot")
+library("minerva")
+library("vip")
+
+#
+library("moments")
+library("zoo")
+library("MASS")
+library("Rcpp")
+library("tidyverse")
+
+#### Paths ---- 
+data_dir <- "Data"
+files_dir <- "Files"
+
+################################################
+#### Cleaning data ----
+##
+#
+extract_capacity <- FALSE
+extract_charge <- FALSE
+
+#
+source("Functions/capacity_functions.R")
+source("01-extractcapacity.R")
+
+#### Extracting features ----
+##
+#
+extract_features <- FALSE
+
+#
+source("Functions/feature_functions.R")
+source("02-extractfeatures.R")
+
+#### Create and train models ----
+
+##
+create_trainingset <- FALSE
+
+#
+train_mlr_models <- FALSE
+train_svr_models <- FALSE
+train_rf_models <- FALSE
+train_nn_models <- FALSE
+
+#
+source("Functions/training_functions.R")
+source("03-trainmodels.R")
+
+#### Create and train models on randomised partial charges ----
+##
+#
+trainrandom_mlr_models <- FALSE
+trainrandom_svr_models <- FALSE
+trainrandom_rf_models <- FALSE
+trainrandom_nn_models <- FALSE
+
+#
+source("04-trainrandommodels.R")
+
+#### Visualise models ----
+##
+#
+theme_set(theme_bw(base_size = 15))
+
+make_figures <- FALSE
+create_vi <- FALSE
+
+#
+source("05-visualisemodels")
