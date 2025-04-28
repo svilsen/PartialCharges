@@ -17,6 +17,7 @@ Files/Models/SVR/*.Rds
 Files/Models/RF/*.Rds
 
 Files/Models/NN/*/*/
+Files/Models/NN/*/*.pb
 
 Files/RandomModels/MLR/*.Rds
 Files/RandomModels/SVR/*.Rds
