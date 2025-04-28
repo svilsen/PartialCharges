@@ -10,8 +10,9 @@ for modelling SOH by support vector regression (SVR), `ranger` for
 modelling SOH by random forest (RF), and `keras` modelling SOH by feed
 forward neural networks (NN).
 
-This code was used to generate the results for the paper “Using battery
-partial charging for reliable state-of-health estimation” (submitted).
+This code was used to generate the results for the paper “Sensitivity
+analysis for reliable state-of-health estimation based on battery
+partial charging” (accepted in Cell Reports Physical Science).
 
 ## Data
 
